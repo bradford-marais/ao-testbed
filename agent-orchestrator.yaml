@@ -1,0 +1,43 @@
+dataDir: ~/.agent-orchestrator
+worktreeDir: ~/.worktrees
+port: 3000
+
+defaults:
+  runtime: tmux
+  agent: claude-code
+  workspace: worktree
+  notifiers: [desktop]
+
+projects:
+  ao-testbed:
+    name: AO Testbed
+    repo: bradford-marais/ao-testbed
+    path: ~/Projects/ao-testbed
+    defaultBranch: main
+    sessionPrefix: test
+    tracker:
+      plugin: github
+    agentConfig:
+      model: sonnet
+      permissions: skip
+    agentRules: |
+      Write clean, well-structured JavaScript (ES modules).
+      Use conventional commits (feat:, fix:, chore:).
+      Keep PRs focused — one issue per PR.
+      Add tests using Node's built-in test runner (node:test).
+      Export functions from src/index.js.
+
+reactions:
+  ci-failed:
+    auto: true
+    action: send-to-agent
+    retries: 2
+    escalateAfter: 2
+  changes-requested:
+    auto: true
+    action: send-to-agent
+    escalateAfter: 30m
+  agent-stuck:
+    threshold: 10m
+    action: notify
+    priority: urgent

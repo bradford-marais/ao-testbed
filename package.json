@@ -1,0 +1,12 @@
+{
+  "name": "ao-testbed",
+  "version": "1.0.0",
+  "description": "Test repo for Agent Orchestrator — parallel AI coding agent workflows",
+  "type": "module",
+  "scripts": {
+    "test": "node --test src/**/*.test.js",
+    "start": "node src/cli.js"
+  },
+  "keywords": ["ai", "agent-orchestrator", "testing"],
+  "license": "MIT"
+}
