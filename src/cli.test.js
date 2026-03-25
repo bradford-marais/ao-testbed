@@ -71,22 +71,32 @@ describe('CLI argument parsing', () => {
   });
 
   describe('voice command', () => {
+    const SAMPLE_TEXT = 'We build software. We ship fast. We cut the fluff and get to the point. ' +
+      'Our tools are powerful. They work. No excuses. No delays. Just results. ' +
+      'We win by executing better than everyone else. Speed matters. Focus matters. ' +
+      'Stop overthinking. Start doing. Our team moves fast and fixes things quickly. ' +
+      'Every decision we make is driven by impact. We measure, we act, we improve. ' +
+      'This is how we operate. This is how we win. Direct action beats endless debate. ' +
+      'Results speak louder than words. We deliver every single time without fail. ' +
+      'Bold moves win markets. Slow teams lose. We execute and dominate by design.';
+
     it('analyzes voice from --text', () => {
-      const result = runCLI(['voice', '--text', 'Stop doing this. Start growing fast.']);
+      const result = runCLI(['voice', '--text', SAMPLE_TEXT]);
       assert.strictEqual(result.status, 0, result.stderr);
       const output = JSON.parse(result.stdout);
-      assert.ok(typeof output.wordCount === 'number');
       assert.ok(typeof output.tone === 'string');
+      assert.ok(typeof output.avgSentenceLength === 'number');
     });
 
     it('analyzes voice from --file', () => {
       const tmpFile = join(__dirname, '_test_sample.txt');
-      writeFileSync(tmpFile, 'Never stop learning. Growth requires daily effort.');
+      writeFileSync(tmpFile, SAMPLE_TEXT);
       try {
         const result = runCLI(['voice', '--file', tmpFile]);
         assert.strictEqual(result.status, 0, result.stderr);
         const output = JSON.parse(result.stdout);
-        assert.ok(typeof output.wordCount === 'number');
+        assert.ok(typeof output.tone === 'string');
+        assert.ok(typeof output.readabilityScore === 'number');
       } finally {
         unlinkSync(tmpFile);
       }

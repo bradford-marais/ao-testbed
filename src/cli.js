@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { readFileSync } from 'node:fs';
 import { generateCalendar } from './calendar.js';
 import { analyzeVoice } from './voice-analyzer.js';
 import { scoreHook } from './hook-scorer.js';
@@ -64,7 +65,9 @@ try {
     result = generateCalendar({ niche: args.niche, pillars });
   } else if (command === 'voice') {
     if (!args.text && !args.file) die('--text or --file is required');
-    result = analyzeVoice({ text: args.text, file: args.file });
+    const content = args.file ? readFileSync(args.file, 'utf8') : args.text;
+    result = analyzeVoice(content);
+    if (result === null) die('text must be at least 100 words');
   } else if (command === 'hook') {
     if (!args.text) die('--text is required');
     result = scoreHook({ text: args.text });
