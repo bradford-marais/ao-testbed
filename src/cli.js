@@ -67,7 +67,7 @@ try {
     result = analyzeVoice({ text: args.text, file: args.file });
   } else if (command === 'hook') {
     if (!args.text) die('--text is required');
-    result = scoreHook({ text: args.text });
+    result = scoreHook(args.text);
   } else {
     die(`Unknown command: ${command}`);
   }

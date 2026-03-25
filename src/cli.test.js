@@ -104,8 +104,8 @@ describe('CLI argument parsing', () => {
       const result = runCLI(['hook', '--text', 'Stop doing this if you want to grow']);
       assert.strictEqual(result.status, 0, result.stderr);
       const output = JSON.parse(result.stdout);
-      assert.ok(typeof output.total === 'number');
-      assert.ok(typeof output.rating === 'string');
+      assert.ok(typeof output.score === 'number');
+      assert.ok(typeof output.category === 'string');
     });
 
     it('shows error when --text is missing', () => {
