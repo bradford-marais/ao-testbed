@@ -27,6 +27,49 @@ projects:
       Add tests using Node's built-in test runner (node:test).
       Export functions from src/index.js.
 
+  apollo:
+    name: Apollo Workspace
+    repo: bradford-marais/Apollo
+    path: ~/Projects/Apollo
+    defaultBranch: main
+    sessionPrefix: apollo
+    tracker:
+      plugin: github
+    agentConfig:
+      model: sonnet
+      permissions: skip
+    agentRules: |
+      CRITICAL SAFETY RULES — READ BEFORE DOING ANYTHING:
+
+      You may ONLY create or modify files in these directories:
+        - System/scripts/
+        - Intelligence/infrastructure/
+
+      You MUST NOT create, modify, or delete files in ANY other directory.
+      Specifically, NEVER touch:
+        - Context/        (identity and strategy — hands off)
+        - Content/         (Brad's drafts and ideas)
+        - Daily/           (personal journal)
+        - Knowledge/       (SOPs, references, templates)
+        - Data/            (client data and metrics)
+        - Build_Log/       (session records)
+        - Plans/           (implementation plans)
+        - Outputs/         (deliverables)
+        - .claude/         (command specs and skills)
+        - CLAUDE.md        (workspace instructions)
+        - Any root-level config files
+
+      If your task requires modifying files outside the allowed directories,
+      STOP and say "This task requires files outside my allowed scope" in your PR description.
+
+      CODE STANDARDS:
+        - Python scripts: use the existing patterns in System/scripts/ (pathlib, dotenv, supabase_client imports)
+        - Shell scripts: use existing conventions (SCRIPT_DIR, APOLLO_DIR, PYTHON vars)
+        - Use conventional commits (feat:, fix:, chore:)
+        - Keep PRs focused — one issue per PR
+        - Test your changes before creating the PR
+        - Do not install new system-level dependencies without noting it in the PR
+
 reactions:
   ci-failed:
     auto: true
@@ -37,6 +80,10 @@ reactions:
     auto: true
     action: send-to-agent
     escalateAfter: 30m
+  approved-and-green:
+    auto: false
+    action: notify
+    priority: action
   agent-stuck:
     threshold: 10m
     action: notify
